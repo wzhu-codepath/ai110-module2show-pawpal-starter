@@ -6,6 +6,22 @@
 
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
+  1. Owner, pet, task and Scheduler.
+     1. Owner:
+        1. Attributes: name, dailyTimeAval
+        2. Methods: updateTimeAval
+     2. Pet:
+        1. Attributes: name, species, tasks
+        2. Methods: addTask, getTasks
+     3. Task
+        1. Attributes: name, duration, priority, taskType
+        2. Methods: isDueToday
+     4. Scheduler:
+        1. Attributes: owner,pet, schedule
+        2. Methods: genDailyPlan, prioritizeTasks, explainPlan
+
+- 3 Core actions
+  1. Adding a pet, Scheduling walk and seeing tasks for the day.
 
 **b. Design changes**
 
