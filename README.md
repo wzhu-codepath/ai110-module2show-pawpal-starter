@@ -42,6 +42,46 @@ pip install -r requirements.txt
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
 
+## Features
+
+PawPal+ includes a suite of intelligent algorithms and scheduling capabilities:
+
+### Task Management & Recurrence
+- **Flexible Task Frequency**: Tasks can be DAILY, WEEKLY, MONTHLY, or AS_NEEDED
+- **Recurring Task Auto-Generation**: Daily and weekly tasks automatically create new instances when marked complete
+  - Daily tasks → new instance due tomorrow
+  - Weekly tasks → new instance due 7 days later
+  - Monthly/AS_NEEDED tasks → marked complete without auto-generation
+- **Intelligent Task Completion**: `isDueToday()` method evaluates frequency rules to determine if a task needs attention
+
+### Smart Scheduling
+- **Priority-Based Task Sorting**: Tasks prioritized by importance (1-5 scale) with secondary sorting by duration (shorter tasks first)
+- **Time-Constrained Scheduling**: Respects owner's daily time availability; drops lower-priority tasks if insufficient time
+- **Chronological Time Sorting**: `sortByTime()` arranges tasks chronologically by scheduled time (HH:MM format); unscheduled tasks move to end
+
+### Conflict Detection & Warnings
+- **Schedule Conflict Detection**: `detectScheduleConflicts()` identifies tasks scheduled at the same time across all pets
+- **Non-Crashing Error Handling**: Returns human-readable warning messages instead of halting execution
+- **Multi-Pet Conflict Awareness**: Detects overlaps both within single pets and across different pets
+- **Detailed Conflict Reporting**: Warnings include pet names, task names, and conflict time
+  - Example: "⚠️  Conflict at 09:00: Morning Walk (Max), Cat Feeding (Whiskers)"
+
+### Task Filtering & Queries
+- **Multi-Criteria Filtering**: Query tasks by type, completion status, pet name, or due date
+- **Pet-Based Organization**: `getTasksDueToday()` returns tasks organized by pet
+- **Daily Plan Generation**: `genDailyPlan()` creates feasible schedule based on availability and priorities
+
+### Plan Explanation
+- **Human-Readable Plan Output**: `explainPlan()` generates detailed explanation including:
+  - Owner availability and total scheduled time
+  - Breakdown of tasks per pet with priorities and durations
+  - Scheduled times for each task
+  - Conflict warnings (if any exist)
+
+### 📸 Demo
+![alt text](image.png)
+![alt text](image-1.png)
+
 ### Smarter Scheduling
 
 The scheduler includes intelligent features for realistic pet care management:
@@ -108,3 +148,4 @@ The test suite includes **40 test cases** covering critical edge cases across si
 #### Confidence Level: ⭐⭐⭐⭐ (4/5 Stars)
 
 All 40 edge case tests pass. Core scheduling logic is solid, error handling is robust, and data integrity is preserved. Minor limitation: The scheduling system only sees conflicts if its exact times rather than ranges.
+
