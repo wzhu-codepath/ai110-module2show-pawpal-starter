@@ -268,7 +268,12 @@ class Scheduler:
         explanation += f"Available time: {self.owner.dailyTimeAval} minutes\n\n"
         
         total_time = 0
-        for p       explanation += f" @ {task.time}"
+        for pet_id, (pet, tasks) in self.schedule.items():
+            explanation += f"{pet.name} ({pet.species}):\n"
+            for task in tasks:
+                explanation += f"  - {task.name} ({task.duration} min) [Priority: {task.priority}]"
+                if task.time:
+                    explanation += f" @ {task.time}"
                 explanation += "\n"
                 total_time += task.duration
             explanation += "\n"
@@ -292,9 +297,3 @@ class Scheduler:
         for pet_id, (pet, tasks) in self.schedule.items():
             scheduled_tasks.extend([task for task in tasks if task.completed == completed])
         return scheduled_tasks
-et_id, (pet, tasks) in self.schedule.items():
-            explanation += f"{pet.name} ({pet.species}):\n"
-            for task in tasks:
-                explanation += f"  - {task.name} ({task.duration} min) [Priority: {task.priority}]"
-                if task.time:
-             
