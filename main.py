@@ -21,7 +21,8 @@ def main():
         duration=45,
         priority=5,
         taskType="Exercise",
-        frequency=Frequency.DAILY
+        frequency=Frequency.DAILY,
+        time="09:00"  # Scheduled at 9:00 AM
     )
     
     feed_task = Task(
@@ -29,7 +30,8 @@ def main():
         duration=10,
         priority=5,
         taskType="Feeding",
-        frequency=Frequency.DAILY
+        frequency=Frequency.DAILY,
+        time="08:00"  # Scheduled at 8:00 AM
     )
     
     play_task = Task(
@@ -37,7 +39,8 @@ def main():
         duration=30,
         priority=4,
         taskType="Exercise",
-        frequency=Frequency.DAILY
+        frequency=Frequency.DAILY,
+        time="14:00"  # Scheduled at 2:00 PM
     )
     
     # Add tasks to dog
@@ -51,7 +54,8 @@ def main():
         duration=5,
         priority=5,
         taskType="Feeding",
-        frequency=Frequency.DAILY
+        frequency=Frequency.DAILY,
+        time="09:00"  # CONFLICT: Same time as dog's Morning Walk
     )
     
     litter_task = Task(
@@ -59,7 +63,8 @@ def main():
         duration=10,
         priority=4,
         taskType="Cleaning",
-        frequency=Frequency.DAILY
+        frequency=Frequency.DAILY,
+        time="15:00"  # Scheduled at 3:00 PM
     )
     
     groom_task = Task(
@@ -67,7 +72,8 @@ def main():
         duration=15,
         priority=3,
         taskType="Care",
-        frequency=Frequency.WEEKLY
+        frequency=Frequency.WEEKLY,
+        time="10:00"  # Scheduled at 10:00 AM
     )
     
     # Add tasks to cat

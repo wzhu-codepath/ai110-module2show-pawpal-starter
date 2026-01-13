@@ -41,7 +41,9 @@
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+  1. One tradeoff my scheduler made was choosing simplicity and readability over full scheduling accuracy. This tradeoff checked for full time matches and produce a clear readble warning.
 - Why is that tradeoff reasonable for this scenario?
+  1. It was reasonable as it kept the algorithm short and deterministic.
 
 ---
 

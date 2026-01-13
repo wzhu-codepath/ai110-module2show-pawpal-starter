@@ -41,3 +41,21 @@ pip install -r requirements.txt
 5. Add tests to verify key behaviors.
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
+
+### Smarter Scheduling
+
+The scheduler includes intelligent features for realistic pet care management:
+
+#### Auto-Task Generation
+When a recurring task (daily or weekly) is marked complete, a new instance is automatically created for the next occurrence:
+- **Daily tasks**: New instance due tomorrow (`today + 1 day`)
+- **Weekly tasks**: New instance due next week (`today + 7 days`)
+- Uses `timedelta` for accurate date calculations across month/year boundaries
+- Call `pet.complete_task(task)` to mark complete and auto-generate the next instance
+
+#### Conflict Detection
+The scheduler detects and warns about tasks scheduled at the same time (same pet or different pets):
+- Non-crashing approach: returns human-readable warning messages
+- Displays conflicts in the plan explanation without halting execution
+- Helps owners identify scheduling overlaps that need manual adjustment
+- Example: "⚠️  Conflict at 09:00: Morning Walk (Max), Cat Feeding (Whiskers)"
