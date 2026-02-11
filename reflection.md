@@ -69,3 +69,4 @@
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+  1. AI is helpful in helping you provide reasonable solutions, but the solutions must be checked. 
