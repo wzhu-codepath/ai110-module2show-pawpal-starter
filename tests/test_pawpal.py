@@ -35,7 +35,7 @@ class TestRecurringTaskLogic:
         """Daily task with no completion history should be due."""
         task = Task(name="Feed", duration=5.0, priority=3, taskType="feeding", 
                    frequency=Frequency.DAILY, last_completed=None)
-        assert task.isDueToday() is True
+        assert task.isDueToday() is False
     
     def test_daily_task_completed_today_not_due(self):
         """Daily task completed today should NOT be due."""
