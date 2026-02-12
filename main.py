@@ -5,15 +5,13 @@ def main():
     """Main script to demonstrate the PawPal scheduling system."""
     
     # Create an owner
-    owner = Owner("Alice", dailyTimeAval=120)  # 120 minutes available per day
+    owner = Owner("Alice")
     
     # Create pets
     dog = Pet("Max", "Golden Retriever")
-    cat = Pet("Whiskers", "Siamese Cat")
     
     # Add pets to owner
     owner.addPet(dog)
-    owner.addPet(cat)
     
     # Create tasks for the dog
     walk_task = Task(
@@ -34,52 +32,9 @@ def main():
         time="08:00"  # Scheduled at 8:00 AM
     )
     
-    play_task = Task(
-        name="Playtime",
-        duration=30,
-        priority=4,
-        taskType="Exercise",
-        frequency=Frequency.DAILY,
-        time="14:00"  # Scheduled at 2:00 PM
-    )
-    
     # Add tasks to dog
     dog.addTask(walk_task)
     dog.addTask(feed_task)
-    dog.addTask(play_task)
-    
-    # Create tasks for the cat
-    cat_feed_task = Task(
-        name="Cat Feeding",
-        duration=5,
-        priority=5,
-        taskType="Feeding",
-        frequency=Frequency.DAILY,
-        time="09:00"  # CONFLICT: Same time as dog's Morning Walk
-    )
-    
-    litter_task = Task(
-        name="Litter Box Cleaning",
-        duration=10,
-        priority=4,
-        taskType="Cleaning",
-        frequency=Frequency.DAILY,
-        time="15:00"  # Scheduled at 3:00 PM
-    )
-    
-    groom_task = Task(
-        name="Grooming",
-        duration=15,
-        priority=3,
-        taskType="Care",
-        frequency=Frequency.WEEKLY,
-        time="10:00"  # Scheduled at 10:00 AM
-    )
-    
-    # Add tasks to cat
-    cat.addTask(cat_feed_task)
-    cat.addTask(litter_task)
-    cat.addTask(groom_task)
     
     # Create scheduler and generate daily plan
     scheduler = Scheduler(owner)

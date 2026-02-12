@@ -5,24 +5,7 @@
 **a. Initial design**
 
 - Briefly describe your initial UML design.
-  1. The design is composed of 4 classes: Owner, Pet, Task and Scheduler. Owner would store information about the owner. Pet class represents a pet and would maintain a list of tasks that needs to be done. The task represents a specific activity holding duration, priority, type and logic to detremine whether or not it is due on a certain day. The scheduler generates a daily care plan by prioritizing tasks based on priority and timing.
 - What classes did you include, and what responsibilities did you assign to each?
-  1. Owner, pet, task and Scheduler.
-     1. Owner:
-        1. Attributes: name, dailyTimeAval
-        2. Methods: updateTimeAval
-     2. Pet:
-        1. Attributes: name, species, tasks
-        2. Methods: addTask, getTasks
-     3. Task
-        1. Attributes: name, duration, priority, taskType
-        2. Methods: isDueToday
-     4. Scheduler:
-        1. Attributes: owner,pet, schedule
-        2. Methods: genDailyPlan, prioritizeTasks, explainPlan
-
-- 3 Core actions
-  1. Adding a pet, Scheduling walk and seeing tasks for the day.
 
 **b. Design changes**
 
@@ -41,9 +24,7 @@
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
-  1. One tradeoff my scheduler made was choosing simplicity and readability over full scheduling accuracy. This tradeoff checked for full time matches and produce a clear readble warning.
 - Why is that tradeoff reasonable for this scenario?
-  1. It was reasonable as it kept the algorithm short and deterministic.
 
 ---
 
@@ -88,3 +69,4 @@
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+  1. AI is helpful in helping you provide reasonable solutions, but the solutions must be checked. 
