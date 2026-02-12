@@ -124,9 +124,14 @@ class Pet:
 class Owner:
     """Represents a pet owner who manages multiple pets."""
     
-    def __init__(self, name: str):
+    def __init__(self, name: str, dailyTimeAval: float):
         self.name = name
+        self.dailyTimeAval = dailyTimeAval  # in minutes
         self.pets: List[Pet] = []
+    
+    def updateTimeAval(self, time: float) -> None:
+        """Update the daily time availability."""
+        self.dailyTimeAval = time
     
     def addPet(self, pet: Pet) -> None:
         """Add a pet to the owner's list."""
@@ -171,18 +176,40 @@ class Scheduler:
     def __init__(self, owner: Owner):
         self.owner = owner
         self.schedule: Dict[Pet, List[Task]] = {}
+        self.conflicts: List[str] = []  # Store conflict warnings
     
     def genDailyPlan(self) -> List[tuple]:
         """Generate a daily plan for all pets based on owner availability. Returns list of (Pet, List[Task]) tuples."""
         schedule_list = self.owner.getTasksDueToday()
         
-        # Store tasks for each pet
+        # Prioritize tasks for each pet
         self.schedule = {}
         for pet, tasks in schedule_list:
-            self.schedule[id(pet)] = (pet, tasks)
+            self.schedule[id(pet)] = (pet, self.prioritizeTasks(tasks))
+        
+        # Detect conflicts after scheduling
+        self.conflicts = self.detectScheduleConflicts()
         
         return schedule_list
-
+    
+    def prioritizeTasks(self, tasks: List[Task]) -> List[Task]:
+        """Prioritize tasks based on priority and constraints."""
+        # Sort by priority (highest first), then by duration (shortest first)
+        sorted_tasks = sorted(
+            tasks,
+            key=lambda t: (-t.priority, t.duration)
+        )
+        
+        # Check if tasks fit within owner's available time
+        total_duration = 0
+        scheduled_tasks = []
+        
+        for task in sorted_tasks:
+            if total_duration + task.duration <= self.owner.dailyTimeAval:
+                scheduled_tasks.append(task)
+                total_duration += task.duration
+        
+        return scheduled_tasks
     
     def sortByTime(self, tasks: List[Task]) -> List[Task]:
         """Sort tasks chronologically by scheduled time in HH:MM format."""
@@ -198,12 +225,47 @@ class Scheduler:
         
         return sorted(tasks, key=lambda t: parse_time(t.time))
     
+    def detectScheduleConflicts(self) -> List[str]:
+        """
+        Detect and return warnings for tasks scheduled at the same time.
+        Lightweight approach: returns warning messages without crashing.
+        
+        Returns:
+            A list of warning messages describing detected conflicts.
+        """
+        warnings = []
+        
+        # Build a map of time -> [(pet_name, task_name), ...]
+        time_map: Dict[str, List[Tuple[str, str]]] = {}
+        
+        for pet_id, (pet, tasks) in self.schedule.items():
+            for task in tasks:
+                if task.time:  # Only check tasks with scheduled times
+                    if task.time not in time_map:
+                        time_map[task.time] = []
+                    time_map[task.time].append((pet.name, task.name))
+        
+        # Check for conflicts (multiple tasks at same time)
+        for scheduled_time, task_list in time_map.items():
+            if len(task_list) > 1:
+                # Build warning message
+                task_details = ", ".join([f"{task_name} ({pet_name})" for pet_name, task_name in task_list])
+                warning = f"⚠️  Conflict at {scheduled_time}: {task_details}"
+                warnings.append(warning)
+        
+        return warnings
+    
+    def getConflictWarnings(self) -> List[str]:
+        """Return the list of conflict warnings from the last generated plan."""
+        return self.conflicts
+    
     def explainPlan(self) -> str:
-        """Explain the generated daily plan for all pets."""
+        """Explain the generated daily plan, including any scheduling conflicts."""
         if not self.schedule:
             return "No tasks scheduled for today."
         
-        explanation = f"Daily Plan for {self.owner.name}:\n\n"
+        explanation = f"Daily Plan for {self.owner.name}:\n"
+        explanation += f"Available time: {self.owner.dailyTimeAval} minutes\n\n"
         
         total_time = 0
         for pet_id, (pet, tasks) in self.schedule.items():
@@ -217,6 +279,15 @@ class Scheduler:
             explanation += "\n"
         
         explanation += f"Total time needed: {total_time} minutes\n"
+        
+        # Add conflict warnings if any exist
+        if self.conflicts:
+            explanation += "\n" + "=" * 50 + "\n"
+            explanation += "SCHEDULING CONFLICTS DETECTED:\n"
+            explanation += "=" * 50 + "\n"
+            for warning in self.conflicts:
+                explanation += warning + "\n"
+            explanation += "Please review and reschedule conflicting tasks.\n"
         
         return explanation
     
